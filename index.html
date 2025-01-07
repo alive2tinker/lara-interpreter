@@ -2,7 +2,11 @@
 <html>
   <head>
     <title></title>
-    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self';"> -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' blob:; worker-src blob:">
+    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <script src="node_modules/monaco-editor/min/vs/loader.js"></script>
     <link rel="stylesheet" href="build.css" />
   </head>
@@ -11,7 +15,7 @@
       <div class="toolbar">
         <ul>
           <li>
-            <button id="run-code">
+            <button id="run-code" type="button">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -29,7 +33,7 @@
             </button>
           </li>
           <li>
-            <button id="select-project">
+            <button id="select-project" type="button">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -53,6 +57,6 @@
         <div id="output-container" class="w-full min-h-[50vh]"></div>
       </div>
     </div>
-    <script src="renderer.js"></script>
+    <script src="renderer.js" defer></script>
   </body>
 </html>
