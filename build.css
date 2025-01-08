@@ -588,10 +588,6 @@ video {
   }
 }
 
-.block {
-  display: block;
-}
-
 .flex {
   display: flex;
 }
@@ -599,10 +595,6 @@ video {
 .size-6 {
   width: 1.5rem;
   height: 1.5rem;
-}
-
-.h-\[50vh\] {
-  height: 50vh;
 }
 
 .min-h-\[50vh\] {
@@ -613,8 +605,9 @@ video {
   width: 100%;
 }
 
-.resize {
-  resize: both;
+.px-3 {
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
 }
 
 #container {

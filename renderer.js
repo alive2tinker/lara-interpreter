@@ -23,9 +23,7 @@ let isExecuting = false;
 require(["vs/editor/editor.main"], function () {
   const container = document.getElementById("container");
   editor = monaco.editor.create(container, {
-    value: `<?php\n//write your code here
-$user = User::find(1);
-echo $user->name;`,
+    value: `<?php\n//write your code here`,
     language: "php",
     automaticLayout: true,
     minimap: { enabled: false },

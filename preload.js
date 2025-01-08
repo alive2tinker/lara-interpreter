@@ -34,8 +34,6 @@ $app = require_once __DIR__.'/bootstrap/app.php';
 $kernel = $app->make(Illuminate\\Contracts\\Console\\Kernel::class);
 $kernel->bootstrap();
 
-use App\\Models\\User;
-
 try {
     ${code}
 } catch (Throwable $e) {
@@ -73,7 +71,7 @@ try {
                 maxBuffer: 1024 * 1024
             }, (error, stdout, stderr) => {
                 try {
-                    unlinkSync(tempFilePath);
+                    // unlinkSync(tempFilePath);
                 } catch (e) {
                     console.error('Error deleting temp file:', e);
                 }
