@@ -21,15 +21,15 @@ contextBridge.exposeInMainWorld('directoryAPI', {
 
 contextBridge.exposeInMainWorld('nodeAPI', {
     runPHP: (code, callback) => {
-        const tempFilePath = path.join(currentLaravelPath, 'storage', 'temp.php');
+        const tempFilePath = path.join(currentLaravelPath, '/', 'temp.php');
 
         // Wrap the code in a Laravel-aware PHP script
         const wrappedCode = `<?php
 define('LARAVEL_START', microtime(true));
 
-require __DIR__.'/../vendor/autoload.php';
+require __DIR__.'/vendor/autoload.php';
 
-$app = require_once __DIR__.'/../bootstrap/app.php';
+$app = require_once __DIR__.'/bootstrap/app.php';
 
 $kernel = $app->make(Illuminate\\Contracts\\Console\\Kernel::class);
 $kernel->bootstrap();

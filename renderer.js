@@ -46,11 +46,16 @@ echo $user->name;`,
     
     isExecuting = true;
     const code = editor.getValue();
+
+    const cleanedCode = code
+        .replace(/<\?php/g, '')
+        .replace(/\/\/.*$/gm, '')
+        .replace(/\/\*[\s\S]*?\*\//g, '');
     
     runCodeButton.disabled = true;
     outputContainer.textContent = "Running...";
 
-    window.nodeAPI.runPHP(code, (result) => {
+    window.nodeAPI.runPHP(cleanedCode, (result) => {
       if (result.error) {
         outputContainer.innerHTML = `<pre class="error">${result.error}</pre>`;
       } else if (result.output) {
