@@ -21,21 +21,34 @@ contextBridge.exposeInMainWorld('directoryAPI', {
 
 contextBridge.exposeInMainWorld('nodeAPI', {
     runPHP: (code, callback) => {
-        const tempFilePath = path.join(currentLaravelPath, '/', 'temp.php');
+        const tempFilePath = path.join(currentLaravelPath, 'storage', 'temp.php');
+
+        // Extract use statements from the code
+        const useStatements = [];
+        const codeLines = code.split('\n');
+        const remainingCode = codeLines.filter(line => {
+            if (line.trim().startsWith('use ')) {
+                useStatements.push(line.trim());
+                return false;
+            }
+            return true;
+        }).join('\n');
 
         // Wrap the code in a Laravel-aware PHP script
         const wrappedCode = `<?php
 define('LARAVEL_START', microtime(true));
 
-require __DIR__.'/vendor/autoload.php';
+require __DIR__.'/../vendor/autoload.php';
 
-$app = require_once __DIR__.'/bootstrap/app.php';
+$app = require_once __DIR__.'/../bootstrap/app.php';
 
 $kernel = $app->make(Illuminate\\Contracts\\Console\\Kernel::class);
 $kernel->bootstrap();
 
+${useStatements.join('\n')}
+
 try {
-    ${code}
+    ${remainingCode}
 } catch (Throwable $e) {
     echo "Error: " . $e->getMessage() . "\\n";
     echo "File: " . $e->getFile() . "\\n";
@@ -71,7 +84,7 @@ try {
                 maxBuffer: 1024 * 1024
             }, (error, stdout, stderr) => {
                 try {
-                    // unlinkSync(tempFilePath);
+                    unlinkSync(tempFilePath);
                 } catch (e) {
                     console.error('Error deleting temp file:', e);
                 }

@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Dark mode styles */
+:root {
+  --editor-bg: theme('colors.white');
+  --toolbar-bg: theme('colors.gray.100');
+  --output-bg: theme('colors.gray.50');
+}
+
+.dark {
+  --editor-bg: theme('colors.editor.dark');
+  --toolbar-bg: theme('colors.gray.900');
+  --output-bg: theme('colors.gray.800');
+}
+
+/* Add explicit hidden class */
+.hidden {
+  display: none !important;
+}
+
+body {
+  @apply bg-[var(--editor-bg)] text-black dark:text-white;
+}
+
+.toolbar {
+  @apply bg-[var(--toolbar-bg)] border-r border-gray-200 dark:border-gray-700;
+}
+
+.toolbar button {
+  @apply p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700;
+}
+
+#output-container {
+  @apply bg-[var(--output-bg)] p-4;
+}
+
+.error {
+  @apply text-red-600 dark:text-red-400;
+}
+
+.output {
+  @apply text-green-600 dark:text-green-400;
+}
+
+.modal {
+  @apply flex items-start justify-center;
+}
+
+.modal-content {
+  @apply bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl;
+}
+
+input[type="number"] {
+  @apply bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded px-2 py-1;
+}
+
+input[type="checkbox"] {
+  @apply rounded border-gray-300 dark:border-gray-600 text-blue-500 focus:ring-blue-500;
+}
+
+button:disabled {
+  @apply opacity-50 cursor-not-allowed;
+} 

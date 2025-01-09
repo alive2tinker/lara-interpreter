@@ -1,62 +1,64 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title></title>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' blob:; worker-src blob:">
-    <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <script src="node_modules/monaco-editor/min/vs/loader.js"></script>
-    <link rel="stylesheet" href="build.css" />
+    <meta charset="UTF-8">
+    <title>PHP Editor</title>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div class="flex">
-      <div class="toolbar">
-        <ul class="px-3">
-          <li>
-            <button id="run-code" type="button">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="size-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z"
-                />
-              </svg>
-            </button>
-          </li>
-          <li>
-            <button id="select-project" type="button">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="size-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"
-                />
-              </svg>
-            </button>
-          </li>
-        </ul>
+    <div id="app">
+      <div class="editor-wrapper">
+        <div class="toolbar">
+          <button id="select-project" @click="selectDirectory">Select Project</button>
+          <button id="run-code" @click="runCode" :disabled="isExecuting">Run Code</button>
+          <button id="editor-settings" @click="isModalOpen = true">Settings</button>
+        </div>
+        
+        <monaco-editor @editor-mounted="onEditorMounted" />
+        
+        <div id="output-container" v-html="outputText"></div>
       </div>
-      <div class="playground w-full">
-        <div id="container" class="w-full min-h-[50vh]"></div>
-        <div id="output-container" class="w-full min-h-[50vh]"></div>
+
+      <!-- Settings Modal -->
+      <div id="settings-modal" :class="{ hidden: !isModalOpen }" @click="isModalOpen = false">
+        <div class="modal-content" @click.stop>
+          <h2>Editor Settings</h2>
+          <div class="settings-group">
+            <label>
+              Font Size:
+              <input type="number" v-model.number="settings.fontSize" min="8" max="30">
+            </label>
+            
+            <label>
+              Tab Size:
+              <input type="number" v-model.number="settings.tabSize" min="2" max="8">
+            </label>
+            
+            <label>
+              Word Wrap:
+              <input type="checkbox" v-model="settings.wordWrap">
+            </label>
+            
+            <label>
+              Minimap:
+              <input type="checkbox" v-model="settings.minimap">
+            </label>
+            
+            <label>
+              Font Ligatures:
+              <input type="checkbox" v-model="settings.fontLigatures">
+            </label>
+          </div>
+          
+          <div class="modal-buttons">
+            <button id="close-settings" @click="isModalOpen = false">Cancel</button>
+            <button id="save-settings" @click="saveSettings">Save</button>
+          </div>
+        </div>
       </div>
     </div>
-    <script src="renderer.js" defer></script>
+
+    <script src="node_modules/monaco-editor/min/vs/loader.js"></script>
+    <script type="module" src="renderer.js"></script>
   </body>
 </html>

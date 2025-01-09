@@ -11,9 +11,12 @@ $kernel->bootstrap();
 use App\Models\User;
 
 try {
-    <?php
-//write your code here
+    
+
+
+
 $user = User::find(1);
+
 echo $user->name;
 } catch (Throwable $e) {
     echo "Error: " . $e->getMessage() . "\n";
